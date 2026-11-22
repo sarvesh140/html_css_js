@@ -60,11 +60,192 @@
           </ul>
         </section>
       </section>
-      <section class="results">result</section>
-      <section class="recent-searches">recent searches</section>
+      <section class="results">
+        <section class="results-header">
+          <div class="results-location">
+            <p class="results-tag">Current Conditions</p>
+            <h2 class="results-city">San Francisco, CA</h2>
+            <p class="results-updated">
+              <ion-icon name="time-outline" class="results-updated-icon"></ion-icon>
+              Updated Today at 14:30 PST
+            </p>
+          </div>
+          <div class="results-temp-box">
+            <div class="results-temp-icon-box">
+              <ion-icon name="cloud-outline" class="results-temp-icon"></ion-icon>
+            </div>
+            <div class="results-temp-text">
+              <p class="results-temp">68°F</p>
+              <p class="results-condition">Partly Cloudy</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="results-range">
+          <p class="results-range-item high">
+            <ion-icon name="arrow-up"></ion-icon>
+            High: <span class="results-range-value">72°F</span>
+          </p>
+          <p class="results-range-item low">
+            <ion-icon name="arrow-down"></ion-icon>
+            Low: <span class="results-range-value">54°F</span>
+          </p>
+          <p class="results-range-item">
+            • Feels like <span class="results-range-value">67°F</span>
+          </p>
+        </section>
+
+        <ul class="results-stats">
+          <li class="stat-card">
+            <div class="stat-card-header">
+              <h3 class="stat-card-title">Humidity</h3>
+              <ion-icon name="flask-outline" class="stat-card-icon humidity"></ion-icon>
+            </div>
+            <p class="stat-card-value">64%</p>
+            <p class="stat-card-note">Dew point: 55°F</p>
+          </li>
+          <li class="stat-card">
+            <div class="stat-card-header">
+              <h3 class="stat-card-title">Wind Speed</h3>
+              <ion-icon name="arrow-forward" class="stat-card-icon wind"></ion-icon>
+            </div>
+            <p class="stat-card-value">
+              12 <span class="stat-card-unit">mph</span>
+            </p>
+            <p class="stat-card-note">Direction: WNW (290°)</p>
+          </li>
+          <li class="stat-card">
+            <div class="stat-card-header">
+              <h3 class="stat-card-title">UV Index</h3>
+              <ion-icon name="sunny-outline" class="stat-card-icon uv"></ion-icon>
+            </div>
+            <p class="stat-card-value">
+              4 <span class="badge moderate">Moderate</span>
+            </p>
+            <p class="stat-card-note">Sun protection recommended</p>
+          </li>
+          <li class="stat-card">
+            <div class="stat-card-header">
+              <h3 class="stat-card-title">Air Quality</h3>
+              <ion-icon name="shield-checkmark-outline" class="stat-card-icon air"></ion-icon>
+            </div>
+            <p class="stat-card-value good">
+              32 <span class="badge good">Good</span>
+            </p>
+            <p class="stat-card-note">PM2.5: 7.4 µg/m³</p>
+          </li>
+          <li class="stat-card">
+            <div class="stat-card-header">
+              <h3 class="stat-card-title">Pressure</h3>
+              <ion-icon name="flash-outline" class="stat-card-icon pressure"></ion-icon>
+            </div>
+            <p class="stat-card-value">
+              1014 <span class="stat-card-unit">hPa</span>
+            </p>
+            <p class="stat-card-note">Steady barometric trend</p>
+          </li>
+          <li class="stat-card">
+            <div class="stat-card-header">
+              <h3 class="stat-card-title">Visibility</h3>
+              <ion-icon name="eye-outline" class="stat-card-icon visibility"></ion-icon>
+            </div>
+            <p class="stat-card-value">
+              10 <span class="stat-card-unit">mi</span>
+            </p>
+            <p class="stat-card-note">Clear viewing range</p>
+          </li>
+        </ul>
+
+        <section class="results-footer">
+          <p class="results-footer-text">
+            Forecast stations: San Francisco Int'l & Presidio
+          </p>
+          <p class="results-confidence">Confidence: High (98%)</p>
+        </section>
+      </section>
+
+      <section class="recent-searches">
+        <section class="recent-searches-header">
+          <div class="recent-searches-title">
+            <div class="recent-searches-logo-box">
+              <ion-icon name="time-outline" class="recent-searches-logo"></ion-icon>
+            </div>
+            <h2 class="recent-searches-heading">Recent Searches</h2>
+          </div>
+          <a href="#" class="recent-searches-clear">Clear history</a>
+        </section>
+
+        <ul class="recent-searches-list">
+          <li class="recent-search-item">
+            <a href="#" class="recent-search-link">
+              <ion-icon name="sunny" class="recent-search-icon sunny"></ion-icon>
+              <div class="recent-search-info">
+                <p class="recent-search-city">Tokyo, Japan</p>
+                <p class="recent-search-meta">12 mins ago • Clear Sky</p>
+              </div>
+              <span class="recent-search-temp">59°F</span>
+            </a>
+          </li>
+          <li class="recent-search-item">
+            <a href="#" class="recent-search-link">
+              <ion-icon name="rainy" class="recent-search-icon"></ion-icon>
+              <div class="recent-search-info">
+                <p class="recent-search-city">New York, NY</p>
+                <p class="recent-search-meta">45 mins ago • Rain Shower</p>
+              </div>
+              <span class="recent-search-temp">52°F</span>
+            </a>
+          </li>
+          <li class="recent-search-item">
+            <a href="#" class="recent-search-link">
+              <ion-icon name="cloud-outline" class="recent-search-icon"></ion-icon>
+              <div class="recent-search-info">
+                <p class="recent-search-city">London, UK</p>
+                <p class="recent-search-meta">2 hours ago • Overcast</p>
+              </div>
+              <span class="recent-search-temp">48°F</span>
+            </a>
+          </li>
+          <li class="recent-search-item">
+            <a href="#" class="recent-search-link">
+              <ion-icon name="partly-sunny" class="recent-search-icon sunny"></ion-icon>
+              <div class="recent-search-info">
+                <p class="recent-search-city">Paris, France</p>
+                <p class="recent-search-meta">3 hours ago • Light Drizzle</p>
+              </div>
+              <span class="recent-search-temp">54°F</span>
+            </a>
+          </li>
+          <li class="recent-search-item">
+            <a href="#" class="recent-search-link">
+              <ion-icon name="sunny" class="recent-search-icon sunny"></ion-icon>
+              <div class="recent-search-info">
+                <p class="recent-search-city">Sydney, Australia</p>
+                <p class="recent-search-meta">5 hours ago • Sunny</p>
+              </div>
+              <span class="recent-search-temp">75°F</span>
+            </a>
+          </li>
+        </ul>
+
+        <p class="recent-searches-tip">
+          <ion-icon name="information-circle" class="recent-searches-tip-icon"></ion-icon>
+          Click any previously viewed city to quickly reload its atmospheric
+          reading into the primary card.
+        </p>
+      </section>
     </main>
     <footer class="footer">
-      <p>© 2026 Weather App</p>
+      <p class="footer-text">
+        © 2026 Weather App • Designed & Engineered with semantic HTML & CSS
+      </p>
+      <ul class="footer-links">
+        <li class="footer-item"><a href="#" class="footer-link">Search</a></li>
+        <li class="footer-item">
+          <a href="#" class="footer-link">Live Readings</a>
+        </li>
+        <li class="footer-item"><a href="#" class="footer-link">History</a></li>
+      </ul>
     </footer>
 
     <script
