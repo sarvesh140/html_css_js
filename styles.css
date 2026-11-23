@@ -52,7 +52,6 @@ body {
 
 .header-heading {
   font-size: 2.8rem;
-  font-weight: 500;
   color: #000;
   font-weight: 600;
 }
@@ -104,15 +103,66 @@ body {
   gap: 2rem;
 }
 
-.search {
+/* Shared Styles */
+
+/* White cards */
+.search,
+.results,
+.recent-searches {
   background-color: #fff;
   padding: 2rem;
-  grid-column: 1 / -2;
   border-radius: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
   border: 1px solid #cbd5e1;
   display: flex;
   flex-direction: column;
+}
+
+/* Light panels inside the cards */
+.results-temp-box,
+.stat-card,
+.recent-search-link,
+.recent-searches-tip {
+  background-color: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+}
+
+/* Card headers with a divider line */
+.results-header,
+.recent-searches-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Blue icon boxes */
+.results-temp-icon-box,
+.recent-searches-logo-box {
+  background-color: #e0f2fe;
+  border-radius: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Blue pills */
+.results-tag,
+.recent-search-temp {
+  font-weight: 600;
+  color: #0284c7;
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 0.5rem;
+}
+
+/* Search Styles */
+
+.search {
+  grid-column: 1 / -2;
   gap: 1rem;
 }
 
@@ -133,7 +183,6 @@ body {
   color: #0284c7;
   text-transform: uppercase;
   letter-spacing: 0.3rem;
-  font-weight: 600;
 }
 
 .search-box {
@@ -165,6 +214,11 @@ body {
 
 .search-button:hover {
   background-color: #0285c7c2;
+}
+
+.search-button:disabled {
+  background-color: #94a3b8;
+  cursor: wait;
 }
 
 .popular-searches {
@@ -204,25 +258,30 @@ body {
 /* Results Styles */
 
 .results {
-  background-color: #fff;
-  padding: 2rem;
   grid-column: 1 / -2;
   grid-row: 2 / -1;
+}
+
+.results-message {
+  margin: auto;
+  padding: 4rem 2rem;
+  font-size: 1.6rem;
+  color: #64748b;
+  text-align: center;
+}
+
+.results-message.error {
+  color: #be123c;
+  background-color: #fff1f2;
+  border: 1px solid #fecdd3;
   border-radius: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-  border: 1px solid #cbd5e1;
+}
+
+.results-weather {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 2rem;
-}
-
-.results-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 2rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid #e5e7eb;
 }
 
 .results-location {
@@ -234,14 +293,9 @@ body {
 
 .results-tag {
   font-size: 1.2rem;
-  font-weight: 600;
-  color: #0284c7;
   text-transform: uppercase;
   letter-spacing: 0.1rem;
-  background-color: #f0f9ff;
-  border: 1px solid #bae6fd;
   padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
 }
 
 .results-city {
@@ -268,18 +322,10 @@ body {
   align-items: center;
   gap: 2rem;
   padding: 2rem;
-  background-color: #f8fafc;
-  border: 1px solid #e5e7eb;
-  border-radius: 1rem;
 }
 
 .results-temp-icon-box {
-  background-color: #e0f2fe;
-  border-radius: 20%;
   padding: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .results-temp-icon {
@@ -336,10 +382,7 @@ body {
 }
 
 .stat-card {
-  background-color: #f8fafc;
   padding: 1.5rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -375,8 +418,8 @@ body {
   color: #f59e0b;
 }
 
-.stat-card-icon.air {
-  color: #10b981;
+.stat-card-icon.temperature {
+  color: #e11d48;
 }
 
 .stat-card-icon.pressure {
@@ -394,10 +437,6 @@ body {
   font-size: 2.8rem;
   font-weight: 700;
   color: #000;
-}
-
-.stat-card-value.good {
-  color: #059669;
 }
 
 .stat-card-unit {
@@ -428,6 +467,11 @@ body {
   color: #047857;
 }
 
+.badge.high {
+  background-color: #ffe4e6;
+  color: #be123c;
+}
+
 .results-footer {
   display: flex;
   justify-content: space-between;
@@ -442,7 +486,7 @@ body {
   color: #64748b;
 }
 
-.results-confidence {
+.results-source {
   font-size: 1.3rem;
   font-weight: 600;
   color: #0284c7;
@@ -451,24 +495,9 @@ body {
 /* Recent Searches Styles */
 
 .recent-searches {
-  background-color: #fff;
-  padding: 2rem;
   grid-column: -2;
   grid-row: 1/ -1;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-  border: 1px solid #cbd5e1;
-  display: flex;
-  flex-direction: column;
   gap: 2rem;
-}
-
-.recent-searches-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid #e5e7eb;
 }
 
 .recent-searches-title {
@@ -478,12 +507,7 @@ body {
 }
 
 .recent-searches-logo-box {
-  background-color: #e0f2fe;
-  border-radius: 20%;
   padding: 0.6rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .recent-searches-logo {
@@ -498,9 +522,12 @@ body {
 }
 
 .recent-searches-clear {
+  font-family: inherit;
   font-size: 1.3rem;
   color: #64748b;
-  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .recent-searches-clear:hover {
@@ -515,14 +542,14 @@ body {
 }
 
 .recent-search-link {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 1.2rem;
   padding: 1.5rem;
-  background-color: #f8fafc;
-  border: 1px solid #e5e7eb;
-  border-radius: 1rem;
-  text-decoration: none;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 .recent-search-link:hover {
@@ -544,12 +571,14 @@ body {
 }
 
 .recent-search-city {
+  display: block;
   font-size: 1.5rem;
   font-weight: 600;
   color: #000;
 }
 
 .recent-search-meta {
+  display: block;
   font-size: 1.2rem;
   color: #64748b;
   margin-top: 0.3rem;
@@ -557,12 +586,16 @@ body {
 
 .recent-search-temp {
   font-size: 1.3rem;
-  font-weight: 600;
-  color: #0284c7;
-  background-color: #f0f9ff;
-  border: 1px solid #bae6fd;
   padding: 0.4rem 0.8rem;
-  border-radius: 0.5rem;
+}
+
+.recent-searches-empty {
+  padding: 2rem;
+  font-size: 1.4rem;
+  color: #64748b;
+  text-align: center;
+  border: 1px dashed #cbd5e1;
+  border-radius: 1rem;
 }
 
 .recent-searches-tip {
@@ -574,9 +607,6 @@ body {
   font-size: 1.3rem;
   line-height: 1.5;
   color: #64748b;
-  background-color: #f8fafc;
-  border: 1px solid #e5e7eb;
-  border-radius: 1rem;
 }
 
 .recent-searches-tip-icon {
@@ -591,9 +621,6 @@ body {
   background-color: #fff;
   padding: 2rem;
   border-top: 1px solid #e5e7eb;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .footer-text {
@@ -602,16 +629,8 @@ body {
   font-weight: 500;
 }
 
-.footer-links {
-  list-style: none;
-  display: flex;
-  gap: 1rem;
-}
-
 .footer-link {
-  font-size: 1.4rem;
   color: #555;
-  text-decoration: underline;
   text-underline-offset: 0.3rem;
 }
 
@@ -619,9 +638,57 @@ body {
   color: #0284c7;
 }
 
-.footer-item:not(:last-child)::after {
-  content: "•";
-  margin-left: 1rem;
-  color: #64748b;
-  font-size: 1.4rem;
+/* Utility Styles */
+
+.hidden {
+  display: none !important;
+}
+
+/* Responsive Styles */
+
+@media (max-width: 900px) {
+  .main {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .search,
+  .results,
+  .recent-searches {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .search-box {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .popular-searches,
+  .popular-searches-list {
+    flex-wrap: wrap;
+  }
+
+  .results-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .results-range,
+  .results-footer {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .results-stats {
+    grid-template-columns: 1fr;
+  }
 }

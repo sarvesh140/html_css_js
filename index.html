@@ -10,7 +10,7 @@
     <header class="header">
       <section class="header-content">
         <div class="header-logo-box">
-          <ion-icon name="sunny" class="header-logo"></ion-icon>
+          <ion-icon name="sunny" class="header-logo" aria-hidden="true"></ion-icon>
         </div>
         <div class="header-text-box">
           <h1 class="header-heading">Weather</h1>
@@ -27,18 +27,24 @@
     <main class="main">
       <section class="search">
         <section class="search-header">
-          <ion-icon name="search" class="search-logo"></ion-icon>
-          <h2 class="search-heading">Search Location</h2>
+          <ion-icon name="search" class="search-logo" aria-hidden="true"></ion-icon>
+          <h2 class="search-heading">
+            <label for="city-input">Search Location</label>
+          </h2>
         </section>
 
-        <section class="search-box">
+        <form class="search-box" id="search-form">
           <input
             type="text"
+            id="city-input"
+            name="city"
             class="search-input"
             placeholder="Enter city or zip code"
+            autocomplete="off"
+            required
           />
-          <button class="search-button">Get Weather</button>
-        </section>
+          <button type="submit" class="search-button">Get Weather</button>
+        </form>
         <section class="popular-searches">
           <h3 class="popular-searches-heading">Popular:</h3>
           <ul class="popular-searches-list">
@@ -60,176 +66,149 @@
           </ul>
         </section>
       </section>
-      <section class="results">
-        <section class="results-header">
-          <div class="results-location">
-            <p class="results-tag">Current Conditions</p>
-            <h2 class="results-city">San Francisco, CA</h2>
-            <p class="results-updated">
-              <ion-icon name="time-outline" class="results-updated-icon"></ion-icon>
-              Updated Today at 14:30 PST
-            </p>
-          </div>
-          <div class="results-temp-box">
-            <div class="results-temp-icon-box">
-              <ion-icon name="cloud-outline" class="results-temp-icon"></ion-icon>
-            </div>
-            <div class="results-temp-text">
-              <p class="results-temp">68°F</p>
-              <p class="results-condition">Partly Cloudy</p>
-            </div>
-          </div>
-        </section>
+      <section class="results" id="results" aria-live="polite">
+        <p class="results-message">
+          Search for a city to see its current weather.
+        </p>
 
-        <section class="results-range">
-          <p class="results-range-item high">
-            <ion-icon name="arrow-up"></ion-icon>
-            High: <span class="results-range-value">72°F</span>
-          </p>
-          <p class="results-range-item low">
-            <ion-icon name="arrow-down"></ion-icon>
-            Low: <span class="results-range-value">54°F</span>
-          </p>
-          <p class="results-range-item">
-            • Feels like <span class="results-range-value">67°F</span>
-          </p>
-        </section>
+        <div class="results-weather hidden">
+          <section class="results-header">
+            <div class="results-location">
+              <p class="results-tag">Current Conditions</p>
+              <h2 class="results-city" id="weather-city"></h2>
+              <p class="results-updated">
+                <ion-icon name="time-outline" class="results-updated-icon" aria-hidden="true"></ion-icon>
+                <span id="weather-updated"></span>
+              </p>
+            </div>
+            <div class="results-temp-box">
+              <div class="results-temp-icon-box">
+                <ion-icon name="cloud-outline" class="results-temp-icon" id="weather-icon" aria-hidden="true"></ion-icon>
+              </div>
+              <div class="results-temp-text">
+                <p class="results-temp" id="weather-temp"></p>
+                <p class="results-condition" id="weather-description"></p>
+              </div>
+            </div>
+          </section>
 
-        <ul class="results-stats">
-          <li class="stat-card">
-            <div class="stat-card-header">
-              <h3 class="stat-card-title">Humidity</h3>
-              <ion-icon name="flask-outline" class="stat-card-icon humidity"></ion-icon>
-            </div>
-            <p class="stat-card-value">64%</p>
-            <p class="stat-card-note">Dew point: 55°F</p>
-          </li>
-          <li class="stat-card">
-            <div class="stat-card-header">
-              <h3 class="stat-card-title">Wind Speed</h3>
-              <ion-icon name="arrow-forward" class="stat-card-icon wind"></ion-icon>
-            </div>
-            <p class="stat-card-value">
-              12 <span class="stat-card-unit">mph</span>
+          <section class="results-range">
+            <p class="results-range-item high">
+              <ion-icon name="arrow-up" aria-hidden="true"></ion-icon>
+              High: <span class="results-range-value" id="weather-high"></span>
             </p>
-            <p class="stat-card-note">Direction: WNW (290°)</p>
-          </li>
-          <li class="stat-card">
-            <div class="stat-card-header">
-              <h3 class="stat-card-title">UV Index</h3>
-              <ion-icon name="sunny-outline" class="stat-card-icon uv"></ion-icon>
-            </div>
-            <p class="stat-card-value">
-              4 <span class="badge moderate">Moderate</span>
+            <p class="results-range-item low">
+              <ion-icon name="arrow-down" aria-hidden="true"></ion-icon>
+              Low: <span class="results-range-value" id="weather-low"></span>
             </p>
-            <p class="stat-card-note">Sun protection recommended</p>
-          </li>
-          <li class="stat-card">
-            <div class="stat-card-header">
-              <h3 class="stat-card-title">Air Quality</h3>
-              <ion-icon name="shield-checkmark-outline" class="stat-card-icon air"></ion-icon>
-            </div>
-            <p class="stat-card-value good">
-              32 <span class="badge good">Good</span>
+            <p class="results-range-item">
+              • Feels like
+              <span class="results-range-value" id="weather-feels-like"></span>
             </p>
-            <p class="stat-card-note">PM2.5: 7.4 µg/m³</p>
-          </li>
-          <li class="stat-card">
-            <div class="stat-card-header">
-              <h3 class="stat-card-title">Pressure</h3>
-              <ion-icon name="flash-outline" class="stat-card-icon pressure"></ion-icon>
-            </div>
-            <p class="stat-card-value">
-              1014 <span class="stat-card-unit">hPa</span>
-            </p>
-            <p class="stat-card-note">Steady barometric trend</p>
-          </li>
-          <li class="stat-card">
-            <div class="stat-card-header">
-              <h3 class="stat-card-title">Visibility</h3>
-              <ion-icon name="eye-outline" class="stat-card-icon visibility"></ion-icon>
-            </div>
-            <p class="stat-card-value">
-              10 <span class="stat-card-unit">mi</span>
-            </p>
-            <p class="stat-card-note">Clear viewing range</p>
-          </li>
-        </ul>
+          </section>
 
-        <section class="results-footer">
-          <p class="results-footer-text">
-            Forecast stations: San Francisco Int'l & Presidio
-          </p>
-          <p class="results-confidence">Confidence: High (98%)</p>
-        </section>
+          <ul class="results-stats">
+            <li class="stat-card">
+              <div class="stat-card-header">
+                <h3 class="stat-card-title">Temperature</h3>
+                <ion-icon name="thermometer-outline" class="stat-card-icon temperature" aria-hidden="true"></ion-icon>
+              </div>
+              <p class="stat-card-value">
+                <span id="stat-temperature"></span>
+                <span class="stat-card-unit">°C</span>
+              </p>
+              <p class="stat-card-note">Measured 2 m above ground</p>
+            </li>
+            <li class="stat-card">
+              <div class="stat-card-header">
+                <h3 class="stat-card-title">Humidity</h3>
+                <ion-icon name="flask-outline" class="stat-card-icon humidity" aria-hidden="true"></ion-icon>
+              </div>
+              <p class="stat-card-value">
+                <span id="stat-humidity"></span>
+                <span class="stat-card-unit">%</span>
+              </p>
+              <p class="stat-card-note">
+                Dew point: <span id="stat-dew-point"></span>
+              </p>
+            </li>
+            <li class="stat-card">
+              <div class="stat-card-header">
+                <h3 class="stat-card-title">Wind Speed</h3>
+                <ion-icon name="arrow-forward" class="stat-card-icon wind" aria-hidden="true"></ion-icon>
+              </div>
+              <p class="stat-card-value">
+                <span id="stat-wind-speed"></span>
+                <span class="stat-card-unit">km/h</span>
+              </p>
+              <p class="stat-card-note">
+                Direction: <span id="stat-wind-direction"></span>
+              </p>
+            </li>
+            <li class="stat-card">
+              <div class="stat-card-header">
+                <h3 class="stat-card-title">UV Index</h3>
+                <ion-icon name="sunny-outline" class="stat-card-icon uv" aria-hidden="true"></ion-icon>
+              </div>
+              <p class="stat-card-value">
+                <span id="stat-uv"></span>
+                <span class="badge" id="stat-uv-level"></span>
+              </p>
+              <p class="stat-card-note" id="stat-uv-note"></p>
+            </li>
+            <li class="stat-card">
+              <div class="stat-card-header">
+                <h3 class="stat-card-title">Pressure</h3>
+                <ion-icon name="flash-outline" class="stat-card-icon pressure" aria-hidden="true"></ion-icon>
+              </div>
+              <p class="stat-card-value">
+                <span id="stat-pressure"></span>
+                <span class="stat-card-unit">hPa</span>
+              </p>
+              <p class="stat-card-note">Mean sea-level pressure</p>
+            </li>
+            <li class="stat-card">
+              <div class="stat-card-header">
+                <h3 class="stat-card-title">Visibility</h3>
+                <ion-icon name="eye-outline" class="stat-card-icon visibility" aria-hidden="true"></ion-icon>
+              </div>
+              <p class="stat-card-value">
+                <span id="stat-visibility"></span>
+                <span class="stat-card-unit">km</span>
+              </p>
+              <p class="stat-card-note">Horizontal viewing distance</p>
+            </li>
+          </ul>
+
+          <section class="results-footer">
+            <p class="results-footer-text">
+              Coordinates: <span id="weather-coordinates"></span>
+            </p>
+            <p class="results-source">Source: Open-Meteo</p>
+          </section>
+        </div>
       </section>
 
-      <section class="recent-searches">
+      <section class="recent-searches" id="recent-searches">
         <section class="recent-searches-header">
           <div class="recent-searches-title">
             <div class="recent-searches-logo-box">
-              <ion-icon name="time-outline" class="recent-searches-logo"></ion-icon>
+              <ion-icon name="time-outline" class="recent-searches-logo" aria-hidden="true"></ion-icon>
             </div>
             <h2 class="recent-searches-heading">Recent Searches</h2>
           </div>
-          <a href="#" class="recent-searches-clear">Clear history</a>
+          <button type="button" class="recent-searches-clear" id="clear-history">
+            Clear history
+          </button>
         </section>
 
-        <ul class="recent-searches-list">
-          <li class="recent-search-item">
-            <a href="#" class="recent-search-link">
-              <ion-icon name="sunny" class="recent-search-icon sunny"></ion-icon>
-              <div class="recent-search-info">
-                <p class="recent-search-city">Tokyo, Japan</p>
-                <p class="recent-search-meta">12 mins ago • Clear Sky</p>
-              </div>
-              <span class="recent-search-temp">59°F</span>
-            </a>
-          </li>
-          <li class="recent-search-item">
-            <a href="#" class="recent-search-link">
-              <ion-icon name="rainy" class="recent-search-icon"></ion-icon>
-              <div class="recent-search-info">
-                <p class="recent-search-city">New York, NY</p>
-                <p class="recent-search-meta">45 mins ago • Rain Shower</p>
-              </div>
-              <span class="recent-search-temp">52°F</span>
-            </a>
-          </li>
-          <li class="recent-search-item">
-            <a href="#" class="recent-search-link">
-              <ion-icon name="cloud-outline" class="recent-search-icon"></ion-icon>
-              <div class="recent-search-info">
-                <p class="recent-search-city">London, UK</p>
-                <p class="recent-search-meta">2 hours ago • Overcast</p>
-              </div>
-              <span class="recent-search-temp">48°F</span>
-            </a>
-          </li>
-          <li class="recent-search-item">
-            <a href="#" class="recent-search-link">
-              <ion-icon name="partly-sunny" class="recent-search-icon sunny"></ion-icon>
-              <div class="recent-search-info">
-                <p class="recent-search-city">Paris, France</p>
-                <p class="recent-search-meta">3 hours ago • Light Drizzle</p>
-              </div>
-              <span class="recent-search-temp">54°F</span>
-            </a>
-          </li>
-          <li class="recent-search-item">
-            <a href="#" class="recent-search-link">
-              <ion-icon name="sunny" class="recent-search-icon sunny"></ion-icon>
-              <div class="recent-search-info">
-                <p class="recent-search-city">Sydney, Australia</p>
-                <p class="recent-search-meta">5 hours ago • Sunny</p>
-              </div>
-              <span class="recent-search-temp">75°F</span>
-            </a>
-          </li>
-        </ul>
+        <ul class="recent-searches-list" id="recent-list"></ul>
+        <p class="recent-searches-empty" id="recent-empty">
+          No recent searches yet. Cities you search for will show up here.
+        </p>
 
         <p class="recent-searches-tip">
-          <ion-icon name="information-circle" class="recent-searches-tip-icon"></ion-icon>
+          <ion-icon name="information-circle" class="recent-searches-tip-icon" aria-hidden="true"></ion-icon>
           Click any previously viewed city to quickly reload its atmospheric
           reading into the primary card.
         </p>
@@ -237,16 +216,18 @@
     </main>
     <footer class="footer">
       <p class="footer-text">
-        © 2026 Weather App • Designed & Engineered with semantic HTML & CSS
+        © 2026 Weather App • Built by plufle • Weather data by
+        <a
+          href="https://open-meteo.com/"
+          class="footer-link"
+          target="_blank"
+          rel="noopener"
+          >Open-Meteo</a
+        >
       </p>
-      <ul class="footer-links">
-        <li class="footer-item"><a href="#" class="footer-link">Search</a></li>
-        <li class="footer-item">
-          <a href="#" class="footer-link">Live Readings</a>
-        </li>
-        <li class="footer-item"><a href="#" class="footer-link">History</a></li>
-      </ul>
     </footer>
+
+    <script src="script.js"></script>
 
     <script
       type="module"
