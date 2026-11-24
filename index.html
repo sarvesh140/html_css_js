@@ -34,15 +34,27 @@
         </section>
 
         <form class="search-box" id="search-form">
-          <input
-            type="text"
-            id="city-input"
-            name="city"
-            class="search-input"
-            placeholder="Enter city or zip code"
-            autocomplete="off"
-            required
-          />
+          <div class="search-field">
+            <input
+              type="text"
+              id="city-input"
+              name="city"
+              class="search-input"
+              placeholder="Enter city or zip code"
+              autocomplete="off"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-expanded="false"
+              aria-controls="city-suggestions"
+              required
+            />
+            <ul
+              class="suggestions hidden"
+              id="city-suggestions"
+              role="listbox"
+              aria-label="City suggestions"
+            ></ul>
+          </div>
           <button type="submit" class="search-button">Get Weather</button>
         </form>
         <section class="popular-searches">

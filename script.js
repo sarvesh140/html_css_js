@@ -50,6 +50,7 @@ const searchForm = document.querySelector("#search-form");
 const cityInput = document.querySelector("#city-input");
 const searchButton = document.querySelector(".search-button");
 const popularLinks = document.querySelectorAll(".popular-search-link");
+const suggestionsList = document.querySelector("#city-suggestions");
 
 const resultsMessage = document.querySelector(".results-message");
 const resultsWeather = document.querySelector(".results-weather");
@@ -77,15 +78,20 @@ async function fetchJson(url) {
   return response.json();
 }
 
-async function getLocation(city) {
-  const url = `${GEOCODING_URL}?name=${encodeURIComponent(city)}&count=5&format=json`;
+async function findPlaces(text) {
+  const url = `${GEOCODING_URL}?name=${encodeURIComponent(text)}&count=5&format=json`;
   const data = await fetchJson(url);
+  return data.results || [];
+}
 
-  if (!data.results || data.results.length === 0) {
+async function getLocation(city) {
+  const places = await findPlaces(city);
+
+  if (places.length === 0) {
     throw new Error(`No city found for "${city}". Check the spelling and try again.`);
   }
 
-  return data.results[0];
+  return places[0];
 }
 
 async function getWeather(latitude, longitude) {
@@ -97,13 +103,16 @@ async function getWeather(latitude, longitude) {
   return fetchJson(url);
 }
 
-async function searchCity(city) {
+// `place` is optional: pass it when we already know the exact location
+// (a clicked suggestion or recent search) to skip the geocoding step.
+async function searchCity(city, place) {
   cityInput.value = city;
+  hideSuggestions();
   showMessage(`Loading weather for "${city}"…`);
   searchButton.disabled = true;
 
   try {
-    const place = await getLocation(city);
+    if (!place) place = await getLocation(city);
     const weather = await getWeather(place.latitude, place.longitude);
     renderWeather(place, weather);
     saveRecentSearch(city, place, weather);
@@ -185,6 +194,11 @@ function getPlaceLabel(place) {
   return [place.name, place.country].filter(Boolean).join(", ");
 }
 
+// Region + country, e.g. "Texas, United States" - helps tell same-named cities apart
+function getPlaceDetail(place) {
+  return [place.admin1, place.country].filter(Boolean).join(", ");
+}
+
 function getUvLevel(uvIndex) {
   if (uvIndex < 3) {
     return { label: "Low", className: "good", note: "No sun protection needed" };
@@ -219,6 +233,14 @@ function createElement(tag, className, text) {
   return element;
 }
 
+// Decorative icon (hidden from screen readers - the text next to it says the same thing)
+function createIcon(name, className) {
+  const icon = createElement("ion-icon", className);
+  icon.setAttribute("name", name);
+  icon.setAttribute("aria-hidden", "true");
+  return icon;
+}
+
 // ---------- Recent searches (localStorage) ----------
 
 function loadRecentSearches() {
@@ -234,6 +256,14 @@ function saveRecentSearch(query, place, weather) {
   const search = {
     query,
     label,
+    // Keep the exact location so clicking this entry later loads the same place
+    place: {
+      name: place.name,
+      admin1: place.admin1,
+      country: place.country,
+      latitude: place.latitude,
+      longitude: place.longitude,
+    },
     temperature: weather.current.temperature_2m,
     weatherCode: weather.current.weather_code,
     searchedAt: Date.now(),
@@ -259,9 +289,7 @@ function createRecentItem(search) {
   const button = createElement("button", "recent-search-link");
   button.type = "button";
 
-  const icon = createElement("ion-icon", "recent-search-icon");
-  icon.setAttribute("name", condition.icon);
-  icon.setAttribute("aria-hidden", "true");
+  const icon = createIcon(condition.icon, "recent-search-icon");
   icon.classList.toggle("sunny", condition.icon.includes("sunny"));
 
   const info = createElement("span", "recent-search-info");
@@ -273,7 +301,7 @@ function createRecentItem(search) {
   const temperature = createElement("span", "recent-search-temp", formatTemperature(search.temperature));
 
   button.append(icon, info, temperature);
-  button.addEventListener("click", () => searchCity(search.query));
+  button.addEventListener("click", () => searchCity(search.query, search.place));
 
   item.append(button);
   return item;
@@ -289,7 +317,121 @@ function renderRecentSearches() {
   clearHistoryButton.classList.toggle("hidden", searches.length === 0);
 }
 
+// ---------- Suggestions (shown while typing) ----------
+
+let suggestions = []; // places currently in the dropdown
+let activeIndex = -1; // suggestion highlighted with the arrow keys (-1 = none)
+let suggestTimer; // waits for the user to pause typing
+let pendingText = null; // text we are fetching suggestions for
+
+async function loadSuggestions(text) {
+  try {
+    const places = await findPlaces(text);
+    // Ignore the answer if the user has typed something else (or searched) since
+    if (text === pendingText) showSuggestions(places);
+  } catch (error) {
+    hideSuggestions(); // suggestions are optional, so fail quietly
+  }
+}
+
+function showSuggestions(places) {
+  if (places.length === 0) {
+    hideSuggestions();
+    return;
+  }
+
+  suggestions = places;
+  activeIndex = -1;
+  suggestionsList.replaceChildren();
+  places.forEach((place, index) => suggestionsList.append(createSuggestionItem(place, index)));
+
+  suggestionsList.classList.remove("hidden");
+  cityInput.setAttribute("aria-expanded", "true");
+  cityInput.removeAttribute("aria-activedescendant");
+}
+
+function hideSuggestions() {
+  clearTimeout(suggestTimer);
+  pendingText = null;
+  suggestions = [];
+  activeIndex = -1;
+  suggestionsList.replaceChildren();
+
+  suggestionsList.classList.add("hidden");
+  cityInput.setAttribute("aria-expanded", "false");
+  cityInput.removeAttribute("aria-activedescendant");
+}
+
+function createSuggestionItem(place, index) {
+  const item = createElement("li", "suggestion");
+  item.id = `suggestion-${index}`;
+  item.setAttribute("role", "option");
+  item.setAttribute("aria-selected", "false");
+
+  item.append(
+    createIcon("location-outline", "suggestion-icon"),
+    createElement("span", "suggestion-name", place.name),
+    createElement("span", "suggestion-detail", getPlaceDetail(place))
+  );
+
+  // mousedown (not click) so it runs before the input's blur closes the list
+  item.addEventListener("mousedown", (event) => {
+    event.preventDefault();
+    chooseSuggestion(place);
+  });
+
+  return item;
+}
+
+function chooseSuggestion(place) {
+  searchCity(getPlaceLabel(place), place);
+}
+
+function highlightSuggestion(index) {
+  const items = suggestionsList.querySelectorAll(".suggestion");
+  activeIndex = index;
+
+  items.forEach((item, i) => {
+    item.classList.toggle("active", i === index);
+    item.setAttribute("aria-selected", i === index);
+  });
+
+  cityInput.setAttribute("aria-activedescendant", items[index].id);
+}
+
 // ---------- Events ----------
+
+cityInput.addEventListener("input", () => {
+  const text = cityInput.value.trim();
+
+  if (text.length < 2) {
+    hideSuggestions();
+    return;
+  }
+
+  clearTimeout(suggestTimer);
+  pendingText = text;
+  suggestTimer = setTimeout(() => loadSuggestions(text), 300);
+});
+
+cityInput.addEventListener("keydown", (event) => {
+  if (suggestions.length === 0) return;
+
+  if (event.key === "ArrowDown") {
+    event.preventDefault();
+    highlightSuggestion((activeIndex + 1) % suggestions.length);
+  } else if (event.key === "ArrowUp") {
+    event.preventDefault();
+    highlightSuggestion(activeIndex <= 0 ? suggestions.length - 1 : activeIndex - 1);
+  } else if (event.key === "Enter" && activeIndex >= 0) {
+    event.preventDefault();
+    chooseSuggestion(suggestions[activeIndex]);
+  } else if (event.key === "Escape") {
+    hideSuggestions();
+  }
+});
+
+cityInput.addEventListener("blur", hideSuggestions);
 
 searchForm.addEventListener("submit", (event) => {
   event.preventDefault();

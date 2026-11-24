@@ -192,8 +192,13 @@ body {
   margin-top: 1rem;
 }
 
-.search-input {
+.search-field {
   flex: 1;
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
   padding: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
@@ -219,6 +224,50 @@ body {
 .search-button:disabled {
   background-color: #94a3b8;
   cursor: wait;
+}
+
+.suggestions {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  right: 0;
+  z-index: 10;
+  list-style: none;
+  background-color: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.suggestion {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+}
+
+.suggestion:hover,
+.suggestion.active {
+  background-color: #f0f9ff;
+}
+
+.suggestion-icon {
+  font-size: 1.8rem;
+  color: #0284c7;
+  flex-shrink: 0;
+}
+
+.suggestion-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #000;
+}
+
+.suggestion-detail {
+  font-size: 1.3rem;
+  color: #64748b;
 }
 
 .popular-searches {
